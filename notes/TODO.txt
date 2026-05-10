@@ -1,6 +1,6 @@
 TODO:
 [TD] setup settings message
-[TD] setup weather broadcast
+[TD] setup weather forecast
 
 DONE:
 

@@ -72,7 +72,6 @@ def database_fetch(table: str, logger: logging.Logger, columns: list[str] = '*',
     try:
         database = sqlite3.connect(constants.DATABASE_LOCATION)
         cursor = database.cursor()
-        print(columns)
         # generate query
         query = "SELECT "
         
