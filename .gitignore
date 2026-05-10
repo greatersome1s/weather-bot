@@ -1,0 +1,9 @@
+*.log
+venv/
+*.db
+
+# python junk
+__pycache__/
+*.__pycache__
+
+.env

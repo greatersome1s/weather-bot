@@ -115,9 +115,6 @@ def register_callback_handler(bot: telebot.TeleBot):
             #extract info about message from table and insert
             if user_id and msg_id:
                 lat, lon = database_fetch("messages", logger, ['lat', 'lon'], {'id': msg_id})
-                
-                print(lat, lon)
-                
                 measure = database_fetch("user_preferences", logger, ['measure'],
                                          {'user_id': user_id})
                 

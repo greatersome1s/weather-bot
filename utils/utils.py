@@ -98,7 +98,6 @@ def database_fetch(table: str, logger: logging.Logger, columns: list[str] = '*',
                     query = query + f"{key} = ? AND "
                 condition_values.append(value)
                 
-        print(query)
         cursor.execute(query, (*condition_values,))
         if (result := cursor.fetchone()) != None:
             return result
