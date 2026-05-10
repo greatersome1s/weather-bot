@@ -1,0 +1,4 @@
+preferences:
+
+create a class for preferences
+each class should corr
