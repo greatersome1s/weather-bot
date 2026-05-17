@@ -96,21 +96,50 @@ def database_fetch(table: str, logger: logging.Logger, columns: list[str] = '*',
                 else:
                     query = query + f"{key} = ? AND "
                 condition_values.append(value)
-                
         cursor.execute(query, (*condition_values,))
-        if (result := cursor.fetchone()) != None:
+        if (result := cursor.fetchall()) != None and len(result) >= 1:
+            logger.debug(f"Sucessfully fetched from database with query: {query}\nGot: {result}")
             return result
         else:
             raise Exception(f"Found nothing.\nConditions: {conditions}\nColumns: {columns}")
     except Exception as e:
-        logger.error(f"Error while fetching from database: {e}")
+        logger.warning(f"Error while fetching from database: {e}\nQuery: {query}")
+        return ()
     finally:
         database.close()
-                
-        
-        
-
+   
 # insert something into a table
+def database_insert(table: str, logger: logging.Logger, columns: list[str], values: list[Any]):
+    try:
+        database = sqlite3.connect(constants.DATABASE_LOCATION)
+        cursor = database.cursor()
+        
+        # generate query
+        
+        names = ""
+        # names into one variable
+        for i in columns:
+            if len(columns) - 1 == columns.index(i):
+                names = names + i
+            else: 
+                names = names + f"{i},"
+                
+        values_text = ""
+        for i in values:
+            if len(values) - 1 == values.index(i):
+                values_text = values_text + "?"
+            else:
+                values_text = values_text + f"?,"
+        
+        query = f"INSERT INTO {table} ({names}) VALUES ({values_text})"
+        cursor.execute(query, values)
+    except Exception as e:
+        logger.error(f"Error while inserting into database. {e}")
+    finally:
+        database.commit()
+        database.close()
+             
+# change something into a table
 def database_change(table: str, id: int, info: dict[str, Any], logger: logging.Logger):
     try: 
         database = sqlite3.connect(constants.DATABASE_LOCATION)
@@ -135,6 +164,32 @@ def database_change(table: str, id: int, info: dict[str, Any], logger: logging.L
         database.commit()
         database.close()
     
+# delete record from a table
+def database_delete(table: str, conditions: dict[str, Any], logger: logging.Logger):
+    try:
+        database = sqlite3.connect(constants.DATABASE_LOCATION)
+        cursor = database.cursor()
+        
+        # generate query
+        conds = ""
+        cond_values = []
+        for index, (key, value) in enumerate(conditions.items()):
+            if len(conditions) - 1 == index:
+                conds = conds + f"{key} = ?"
+            else:
+                conds = conds + f"{key} = ? AND "
+            cond_values.append(value)
+        
+        query = f"DELETE FROM {table} WHERE {conds}"
+        cursor.execute(query, (*cond_values,))
+        return True
+    except Exception as e:
+        logger.error(f"Error while deleting from table {table}.\n{e}")
+        return False
+    finally:
+        database.commit()
+        database.close()
+
 def save_message(msg: Message, logger: logging.Logger):
     try:
         database = sqlite3.connect(constants.DATABASE_LOCATION)
@@ -192,7 +247,7 @@ def get_id_teleid(table:str, teleid: int, logger: logging.Logger) -> int:
         database.close()
 
 # fetching weather from api. requests version
-def get_weather_requests(lat: float, lon: float, measure: str, logger: logging.Logger):
+def get_weather_requests(lat: float, lon: float, logger: logging.Logger, measure: str = "METRIC"):
     response = requests.get(f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={constants.TOKEN_WEATHER}&units={measure}")
     
     if response:

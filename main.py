@@ -8,9 +8,9 @@ from handlers.messages import register_message_handler
 
 bot = telebot.TeleBot(constants.TOKEN_TELEGRAM)
 
-register_callback_handler(bot)
 register_command_handler(bot)
 register_message_handler(bot)
+register_callback_handler(bot)
     
 if __name__ == "__main__":
     bot.infinity_polling()

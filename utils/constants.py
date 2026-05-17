@@ -26,6 +26,15 @@ DATABASE_INDEX_USER_PREFERENCES = {
     'location_desc': 6
 }
 
+DATABASE_INDEX_FAVORITES = {
+    'id': 0,
+    'user_id': 1,
+    'lat': 2,
+    'lon': 3,
+    'country': 4,
+    'city': 5
+}
+
 # TOKENS
 
 TOKEN_TELEGRAM = os.environ.get("TOKEN")
@@ -38,6 +47,8 @@ LOGGER_APP = util_mainDirectory_location / "logs" / "app.log"
 LOGGER_DEBUG = util_mainDirectory_location / "logs" / "debug.log"
 
 # WEATHER RELATED
+
+WEATHER_FAVORITE_LOCATIONS_MAX = 10
 
 WEATHER_CLEAR = "\U00002600\uFE0F"
 WEATHER_CLOUDS = "\U00002601\uFE0F"

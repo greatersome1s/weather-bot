@@ -1,10 +1,12 @@
 TODO:
 [TD] setup settings message
 [TD] setup weather forecast
+[TD] setup weatherapi + preferences for it
+[TD] add favorite cities + menu buttons to get instant weather for it
 
 DONE:
 
 [D] sort the fuck out this fucking hierarchy omfg. make it look pretty!
 [D] move data.db to separate folder and make a constant for it
 [D] on running start - check for user's records in all necessary tables, in case of an old user.
-[TD] add imperial/metric system to preferences
+[D] add imperial/metric system to preferences
